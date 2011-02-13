@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+ <head>
+  <title>
+   First Node/Socket
+  </title>
+<!--  <script src="https://github.com/douglascrockford/JSON-js/raw/master/json2.js"></script> -->
+  <script src="http://173.255.232.46/js/socket.io.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+<script> 
+ var socket = new io.Socket('173.255.232.46'); 
+ socket.connect();
+ //socket.on('connect', function(){ alert('client connected'); }); 
+ socket.on('message', 
+   function(msg){
+    switch(msg.type){
+      case "message":
+        $('#content').append(msg.uid+" : "+msg.content+"<br/>");
+        break;
+      case "connect":
+        $('#content').append(msg.uid+" has joined. <br/>");
+        break;    
+      case "disconnect":
+        $('#content').append(msg.uid+" has left. <br/>");
+        break;
+     }
+   }
+ );
+
+ function sendMsg(message){
+   socket.send(message);
+ }
+// socket.on('message', function(){ . }) 
+// socket.on('disconnect', function(){ . }) 
+</script> 
+ </head>
+ <body>
+  <h1>
+   Hello, World!
+  </h1>
+  <input type='text' onkeydown="if(event.keyCode==13){sendMsg(this.value);this.value=''}">
+  </input>
+  This is a chat window.<br/>
+  <div id="chatList">
+
+  </div>
+  <div id="content" style="border-top:1px solid #000;">
+  </div>
+ </body>
+</html>
+
